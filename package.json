@@ -1,0 +1,39 @@
+{
+  "name": "api.ad",
+  "version": "1.0.0",
+  "description": "Api para la asignatura acceso a datos",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ./app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "api",
+    "acceso",
+    "datos",
+    "fp",
+    "ciclo",
+    "formativa",
+    "dam",
+    "patata"
+  ],
+  "author": "Jaume Lloret Enríquez",
+  "license": "Unlicense",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "fast-crc32c": "^2.0.0",
+    "firebase-admin": "^9.4.2",
+    "mongodb": "^3.6.4",
+    "mongoose": "^5.11.15",
+    "multer": "^1.4.2",
+    "passport": "^0.4.1",
+    "salted-md5": "^4.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "nodemon": "^2.0.7"
+  }
+}
