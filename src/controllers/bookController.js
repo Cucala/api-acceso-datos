@@ -2,9 +2,9 @@
 const admin = require('firebase-admin');
 const send = require('../utils/response');
 const { write } = require('../utils/log');
-const LibroModel = require('../models/LibroModel');
-const TipoMonedaModel = require('../models/TipoMonedaModel');
-const TipoLibroModel = require('../models/TipoLibroModel');
+const LibroModel = require('../models/BookModel');
+const TipoMonedaModel = require('../models/CoinModel');
+const TipoLibroModel = require('../models/BookTypeModel');
 
 const dbFS = admin.firestore();
 const dbFSLibro = dbFS.collection('Libro');

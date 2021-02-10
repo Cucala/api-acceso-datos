@@ -28,7 +28,19 @@ function show(request, response) {
   let type = request.params.id.split('.')[1];
   const localFilename = `../../data/image.${type}`;
   type = mime[type] || 'text/plain';
-  file.createReadStream().on('error',
+  const config = {
+    action: 'read',
+    expires: '03-17-2025',
+  };
+  file.getSignedUrl(config, (err, url) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log(url);
+  });
+  // fs.createWriteStream(file.download());
+  /* file.createReadStream().on('error',
     (err) => {
       // eslint-disable-next-line no-console
       console.error(`Entra en error: -> ${err}`);
@@ -41,7 +53,7 @@ function show(request, response) {
     .on('end', () => {
       send.response200(response, { end: 'ok' });
     })
-    .pipe(fs.createWriteStream(localFilename));
+    .pipe(fs.createWriteStream(localFilename)); */
 }
 
 async function store(request, response) {

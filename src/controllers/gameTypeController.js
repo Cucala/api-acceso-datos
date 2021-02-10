@@ -3,7 +3,7 @@
 const { MongoClient } = require('mongodb');
 const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
-const TipoJuegoModel = require('../models/TipoJuegoModel');
+const TipoJuegoModel = require('../models/GameTypeModel');
 const send = require('../utils/response');
 const { write } = require('../utils/log');
 

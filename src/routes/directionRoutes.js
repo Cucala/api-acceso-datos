@@ -1,5 +1,5 @@
 const express = require('express');
-const controller = require('../controllers/prestadoController');
+const controller = require('../controllers/directionController');
 
 const router = express.Router();
 

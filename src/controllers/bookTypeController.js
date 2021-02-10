@@ -1,7 +1,7 @@
 const admin = require('firebase-admin');
 const send = require('../utils/response');
 const { write } = require('../utils/log');
-const TipoLibroModel = require('../models/TipoLibroModel');
+const TipoLibroModel = require('../models/BookTypeModel');
 
 const dbFS = admin.firestore();
 const dbRtD = admin.database();

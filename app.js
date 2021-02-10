@@ -14,7 +14,6 @@ const PORT = process.env.PORT || 8030;
 const HOSTNAME = '127.0.0.1';
 
 app.use(express.json());
-app.use(express.urlencoded());
 app.use(compression());
 
 require('./src/routes/routes')(app);
