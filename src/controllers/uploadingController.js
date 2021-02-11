@@ -48,7 +48,8 @@ function show(request, response) {
     console.log(contents);
     response.sendFile('C:\\Users\\elcuc\\OneDrive\\Proyectos\\Node\\api-acceso-datos\\data\\image.png');
   }).catch((err) => {
-    console.log(err);
+    // eslint-disable-next-line no-console
+    console.error(err);
     send.response404(response);
   });
 }
