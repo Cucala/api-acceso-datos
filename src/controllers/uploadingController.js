@@ -32,28 +32,25 @@ function show(request, response) {
     action: 'read',
     expires: '03-17-2025',
   };
-  file.getSignedUrl(config, (err, url) => {
+  /* file.getSignedUrl(config, (err, url) => {
     if (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
+      send.response404(response);
       return;
     }
-    console.log(url);
+    send.response200(response, { img: url });
+  }); */
+  file.download({
+    destination: 'C:\\Users\\elcuc\\OneDrive\\Proyectos\\Node\\api-acceso-datos\\data\\image.png',
+  }).then((data) => {
+    const contents = data[0];
+    console.log(contents);
+    response.sendFile('C:\\Users\\elcuc\\OneDrive\\Proyectos\\Node\\api-acceso-datos\\data\\image.png');
+  }).catch((err) => {
+    console.log(err);
+    send.response404(response);
   });
-  // fs.createWriteStream(file.download());
-  /* file.createReadStream().on('error',
-    (err) => {
-      // eslint-disable-next-line no-console
-      console.error(`Entra en error: -> ${err}`);
-    })
-    .on('response', (res) => {
-      response.setHeader('Content-Type', type);
-      // eslint-disable-next-line no-console
-      console.log(`Entra en response: -> ${res}`);
-    })
-    .on('end', () => {
-      send.response200(response, { end: 'ok' });
-    })
-    .pipe(fs.createWriteStream(localFilename)); */
 }
 
 async function store(request, response) {
