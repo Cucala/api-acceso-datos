@@ -5,7 +5,7 @@ const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
 const TipoJuegoModel = require('../models/GameTypeModel');
 const send = require('../utils/response');
-const { write } = require('../utils/log');
+const writeLog = require('../utils/log').write;
 
 const uriLocal = 'mongodb://localhost/patatasimon';
 const uriAtlas = 'mongodb+srv://patatasimon:2321patata@cluster0.9g3l6.mongodb.net/?retryWrites=true&w=majority';
@@ -35,7 +35,7 @@ function close() {
 }
 
 async function index(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
   if (request.query.db === 'driver') {
     const filter = {};
     const client = await MongoClient.connect(uriAtlas,
@@ -67,7 +67,7 @@ async function index(request, response) {
 }
 
 async function show(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
   const filter = {
     _id: new ObjectId(request.params.id),
   };
@@ -96,19 +96,19 @@ async function show(request, response) {
 }
 
 function store(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function update(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function updateForce(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function destroy(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 module.exports = {

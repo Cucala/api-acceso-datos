@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 const admin = require('firebase-admin');
 const send = require('../utils/response');
-const { write } = require('../utils/log');
+const writeLog = require('../utils/log').write;
 const LibroModel = require('../models/BookModel');
 const TipoMonedaModel = require('../models/CoinModel');
 const TipoLibroModel = require('../models/BookTypeModel');
@@ -13,7 +13,7 @@ async function index(request, response) {
   const filtro = {
     db: request.query.db,
   };
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
   const libros = [];
   await dbFSLibro.get().then(
     (libroSnapshot) => {
@@ -73,7 +73,7 @@ async function index(request, response) {
             },
           ).catch(
             (error) => {
-              write(error);
+              writeLog(error);
               send.response404(response);
             },
           );
@@ -82,14 +82,14 @@ async function index(request, response) {
     },
   ).catch(
     (error) => {
-      write(error);
+      writeLog(error);
       send.response404(response);
     },
   );
 }
 
 function show(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
   dbFSLibro.doc(request.params.id).get().then(
     (libroDoc) => {
       const libroData = libroDoc.data();
@@ -145,7 +145,7 @@ function show(request, response) {
         },
       ).catch(
         (error) => {
-          write(error);
+          writeLog(error);
           send.response404(response);
         },
       );
@@ -154,19 +154,19 @@ function show(request, response) {
 }
 
 function store(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function update(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function updateForce(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function destroy(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 module.exports = {

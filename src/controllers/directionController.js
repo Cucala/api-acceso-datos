@@ -1,29 +1,29 @@
 /* eslint-disable no-unused-vars */
 const admin = require('firebase-admin');
-const { write } = require('../utils/log');
+const writeLog = require('../utils/log').write;
 
 function index(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function show(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function store(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function update(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function updateForce(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function destroy(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 module.exports = {

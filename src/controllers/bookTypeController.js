@@ -1,6 +1,6 @@
 const admin = require('firebase-admin');
 const send = require('../utils/response');
-const { write } = require('../utils/log');
+const writeLog = require('../utils/log').write;
 const TipoLibroModel = require('../models/BookTypeModel');
 
 const dbFS = admin.firestore();
@@ -9,7 +9,7 @@ const dbFSTipoLibro = dbFS.collection('TipoLibro');
 const dbRtDTipoLibro = dbRtD.ref('tipolibro');
 
 async function index(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
   const tiposDeLibro = [];
   if (request.query.db === 'rtd') {
     await dbRtDTipoLibro.once('value', (snapshot) => {
@@ -47,7 +47,7 @@ async function index(request, response) {
 }
 
 async function show(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
   let tipoLibroModel;
   if (request.query.db === 'rtd') {
     dbRtDTipoLibro.child(request.params.id).on('value', (child) => {
@@ -82,7 +82,7 @@ async function show(request, response) {
 }
 
 async function store(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
   let msg;
   if (request.query.db === 'rtd') {
     msg = await dbRtDTipoLibro.push(request.body);
@@ -97,7 +97,7 @@ async function store(request, response) {
 }
 
 async function update(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
   let msg;
   if (request.query.db === 'rtd') {
     msg = await dbRtDTipoLibro.child(request.params.id);
@@ -115,7 +115,7 @@ async function update(request, response) {
 }
 
 async function updateForce(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
   let msg;
   if (request.query.db === 'rtd') {
     msg = await dbRtDTipoLibro.child(request.params.id);
@@ -131,7 +131,7 @@ async function updateForce(request, response) {
 }
 
 async function destroy(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
   let msg;
   if (request.query.db === 'rtd') {
     msg = await dbRtDTipoLibro.child(request.params.id);

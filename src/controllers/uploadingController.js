@@ -4,58 +4,36 @@ const saltedMd5 = require('salted-md5');
 const fs = require('fs');
 const path = require('path');
 const send = require('../utils/response');
-const { write } = require('../utils/log');
+const writeLog = require('../utils/log').write;
 
 const bucket = admin.storage().bucket();
-const mime = {
-  html: 'text/html',
-  txt: 'text/plain',
-  css: 'text/css',
-  gif: 'image/gif',
-  jpg: 'image/jpeg',
-  png: 'image/png',
-  svg: 'image/svg+xml',
-  js: 'application/javascript',
-};
 
 function index(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function show(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
-  const file = bucket.file(request.params.id);
-  let type = request.params.id.split('.')[1];
-  const localFilename = `../../data/image.${type}`;
-  type = mime[type] || 'text/plain';
-  const config = {
-    action: 'read',
-    expires: '03-17-2025',
-  };
-  /* file.getSignedUrl(config, (err, url) => {
-    if (err) {
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  const localPath = `${path.resolve(__dirname, '../../data/temp')}\\${request.params.id}`;
+  if (fs.existsSync(localPath)) {
+    response.sendFile(localPath);
+  } else {
+    const file = bucket.file(request.params.id);
+    file.download().then((data) => {
+      fs.writeFile(localPath, data[0], (err) => {
+        if (err) throw err;
+        response.sendFile(localPath);
+      });
+    }).catch((err) => {
       // eslint-disable-next-line no-console
       console.error(err);
       send.response404(response);
-      return;
-    }
-    send.response200(response, { img: url });
-  }); */
-  file.download({
-    destination: 'C:\\Users\\elcuc\\OneDrive\\Proyectos\\Node\\api-acceso-datos\\data\\image.png',
-  }).then((data) => {
-    const contents = data[0];
-    console.log(contents);
-    response.sendFile('C:\\Users\\elcuc\\OneDrive\\Proyectos\\Node\\api-acceso-datos\\data\\image.png');
-  }).catch((err) => {
-    // eslint-disable-next-line no-console
-    console.error(err);
-    send.response404(response);
-  });
+    });
+  }
 }
 
 async function store(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
   const name = saltedMd5(request.file.originalname, 'SUPER-S@LT!');
   const fileName = name + path.extname(request.file.originalname);
   await bucket.file(fileName).createWriteStream().end(request.file.buffer);
@@ -63,15 +41,15 @@ async function store(request, response) {
 }
 
 function update(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function updateForce(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 function destroy(request, response) {
-  write(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
 }
 
 module.exports = {
