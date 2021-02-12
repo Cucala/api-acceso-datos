@@ -4,6 +4,7 @@ const saltedMd5 = require('salted-md5');
 const fs = require('fs');
 const path = require('path');
 const send = require('../utils/response');
+const { limpiarArchivosEnCacheSi } = require('../utils/cacheControl');
 const writeLog = require('../utils/log').write;
 
 const bucket = admin.storage().bucket();
@@ -14,7 +15,8 @@ function index(request, response) {
 
 function show(request, response) {
   writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
-  const localPath = `${path.resolve(__dirname, '../../data/temp')}\\${request.params.id}`;
+  const absolutePath = path.resolve(__dirname, '../../data/temp');
+  const localPath = `${absolutePath}\\${request.params.id}`;
   if (fs.existsSync(localPath)) {
     response.sendFile(localPath);
   } else {
@@ -23,6 +25,7 @@ function show(request, response) {
       fs.writeFile(localPath, data[0], (err) => {
         if (err) throw err;
         response.sendFile(localPath);
+        limpiarArchivosEnCacheSi(absolutePath, 100);
       });
     }).catch((err) => {
       // eslint-disable-next-line no-console
@@ -42,14 +45,28 @@ async function store(request, response) {
 
 function update(request, response) {
   writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  bucket.file(request.params.id).save(request.file.buffer).then(
+    () => send.response200(response, { accion: 'actualizado' }),
+  ).catch(() => send.response304(response));
 }
 
-function updateForce(request, response) {
+async function updateForce(request, response) {
   writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  await bucket.file(request.params.id).createWriteStream().end(request.file.buffer);
+  send.response200(response, { accion: 'actualizado' });
 }
 
 function destroy(request, response) {
   writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  const absolutePath = path.resolve(__dirname, '../../data/temp');
+  const localPath = `${absolutePath}\\${request.params.id}`;
+  if (fs.existsSync(localPath)) {
+    fs.unlinkSync(localPath);
+  }
+  const file = bucket.file(request.params.id);
+  file.delete().then(
+    () => send.response200(response, { accion: 'borrado', nombre: request.params.id }),
+  ).catch(() => send.response304(response));
 }
 
 module.exports = {
