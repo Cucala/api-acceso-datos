@@ -167,3 +167,4 @@
 > GET -> /tipojuego/6022a1deb79efcc9d988f941?db=driver | 127.0.0.1
 > GET -> /tipojuego/6022a1deb79efcc9d988f941?db=driver | 127.0.0.1
 > GET -> /tipojuego/6022a1deb79efcc9d988f941?db=driver | 127.0.0.1
+> GET -> /tipojuego/6022a1deb79efcc9d988f941?db=driver | 127.0.0.1
