@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 const { MongoClient } = require('mongodb');
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongoose').Types;
 const mongoose = require('mongoose');
 const TipoJuegoModel = require('../models/GameTypeModel');
 const send = require('../utils/response');
@@ -38,7 +38,7 @@ async function index(request, response) {
   writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
   if (request.query.db === 'driver') {
     const filter = {};
-    const client = await MongoClient.connect(uriAtlas,
+    const client = await MongoClient.connect(uriLocal,
       { useNewUrlParser: true, useUnifiedTopology: true });
     const db = client.db('patatasimon');
     const items = await db.collection('tipojuego').find(filter);
@@ -60,6 +60,8 @@ async function index(request, response) {
     connect();
     TipoJuegoMongoose.find().then(
       (res) => send.response200(response, res),
+    ).catch(
+      () => send.response304(response),
     ).finally(
       () => close(),
     );
@@ -72,23 +74,35 @@ async function show(request, response) {
     _id: new ObjectId(request.params.id),
   };
   if (request.query.db === 'driver') {
-    const client = await MongoClient.connect(uriAtlas,
-      { useNewUrlParser: true, useUnifiedTopology: true });
-    const db = client.db('patatasimon');
-    const doc = await db.collection('tipojuego').findOne(filter);
-    const tipoJuego = new TipoJuegoModel(
-      // eslint-disable-next-line no-underscore-dangle
-      doc._id,
-      doc.nombre,
-      doc.descripcion,
-      doc.habilitado,
+    MongoClient.connect(uriAtlas,
+      { useNewUrlParser: true, useUnifiedTopology: true }).then(
+      (client) => {
+        const db = client.db('patatasimon');
+        db.collection('tipojuego').findOne(filter).then(
+          (doc) => {
+            const tipoJuego = new TipoJuegoModel(
+              // eslint-disable-next-line no-underscore-dangle
+              doc._id,
+              doc.nombre,
+              doc.descripcion,
+              doc.habilitado,
+            );
+            send.response200(response, tipoJuego);
+            client.close();
+          },
+        ).catch(
+          () => send.response404(response),
+        );
+      },
+    ).catch(
+      () => send.response404(response),
     );
-    send.response200(response, tipoJuego);
-    client.close();
   } else {
     connect();
     TipoJuegoMongoose.findOne(filter).then(
-      (res) => response.json(res),
+      (res) => send.response200(response, res),
+    ).catch(
+      () => send.response304(response),
     ).finally(
       () => close(),
     );
@@ -97,18 +111,59 @@ async function show(request, response) {
 
 function store(request, response) {
   writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  connect();
+  TipoJuegoMongoose.insertMany(request.body).then(
+    (res) => send.response200(response, res),
+  ).catch(
+    () => send.response304(response),
+  ).finally(
+    () => close(),
+  );
 }
 
 function update(request, response) {
   writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  const filter = {
+    _id: new ObjectId(request.params.id),
+  };
+  connect();
+  TipoJuegoMongoose.updateOne(filter, request.body).then(
+    (res) => send.response200(response, res),
+  ).catch(
+    () => send.response304(response),
+  ).finally(
+    () => close(),
+  );
 }
 
 function updateForce(request, response) {
   writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  const filter = {
+    _id: new ObjectId(request.params.id),
+  };
+  connect();
+  TipoJuegoMongoose.replaceOne(filter, request.body).then(
+    (res) => send.response200(response, res),
+  ).catch(
+    () => send.response304(response),
+  ).finally(
+    () => close(),
+  );
 }
 
 function destroy(request, response) {
   writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  const filter = {
+    _id: new ObjectId(request.params.id),
+  };
+  connect();
+  TipoJuegoMongoose.deleteOne(filter).then(
+    (res) => send.response200(response, res),
+  ).catch(
+    () => send.response304(response),
+  ).finally(
+    () => close(),
+  );
 }
 
 module.exports = {

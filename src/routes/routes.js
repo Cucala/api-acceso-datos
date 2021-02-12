@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 function router(app) {
-  app.use('/upload', require('./uploadingRoutes'));
+  app.use('/subir', require('./uploadingRoutes'));
+  app.use('/juego', require('./gameRoutes'));
   app.use('/tipojuego', require('./gameTypeRoutes'));
   app.use('/tipolibro', require('./bookTypeRoutes'));
   app.use('/libro', require('./bookRoutes'));
