@@ -1,5 +1,5 @@
 const express = require('express');
-const controller = require('../controllers/bookTypeController');
+const controller = require('../../controllers/gameController');
 
 const router = express.Router();
 

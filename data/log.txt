@@ -168,3 +168,6 @@
 > GET -> /tipojuego/6022a1deb79efcc9d988f941?db=driver | 127.0.0.1
 > GET -> /tipojuego/6022a1deb79efcc9d988f941?db=driver | 127.0.0.1
 > GET -> /tipojuego/6022a1deb79efcc9d988f941?db=driver | 127.0.0.1
+> GET -> /subir/374bb2d55133f1af69a18651a4b63a68.png | 127.0.0.1
+> GET -> /subir | 127.0.0.1
+> GET -> /subir | 127.0.0.1

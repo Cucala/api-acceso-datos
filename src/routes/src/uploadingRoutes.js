@@ -1,11 +1,14 @@
 const express = require('express');
-const controller = require('../controllers/gameTypeController');
+const multer = require('multer');
+const controller = require('../../controllers/uploadingController');
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 const router = express.Router();
 
 router.get('/', controller.index);
 router.get('/:id', controller.show);
-router.post('/', controller.store);
+router.post('/', upload.single('file'), controller.store);
 router.put('/:id', controller.updateForce);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);

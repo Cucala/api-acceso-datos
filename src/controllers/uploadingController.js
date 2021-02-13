@@ -11,6 +11,18 @@ const bucket = admin.storage().bucket();
 
 function index(request, response) {
   writeLog(`${request.method} -> ${request.originalUrl} | ${request.ip}`);
+  bucket.getFiles().then((data) => {
+    const files = data[0];
+    const listadoDeNombresDeArchivos = [];
+    files.forEach(
+      (file) => listadoDeNombresDeArchivos.push(file.name),
+    );
+    send.response200(response, listadoDeNombresDeArchivos);
+  }).catch((err) => {
+    // eslint-disable-next-line no-console
+    console.error(err);
+    send.response404(response);
+  });
 }
 
 function show(request, response) {

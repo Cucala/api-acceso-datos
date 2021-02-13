@@ -6,9 +6,10 @@ const mongoose = require('mongoose');
 const TipoJuegoModel = require('../models/GameTypeModel');
 const send = require('../utils/response');
 const writeLog = require('../utils/log').write;
+const keyMongodbAtlas = require('../../data/keys/key-mongodb.json');
 
 const uriLocal = 'mongodb://localhost/patatasimon';
-const uriAtlas = 'mongodb+srv://patatasimon:2321patata@cluster0.9g3l6.mongodb.net/?retryWrites=true&w=majority';
+const uriAtlas = `mongodb+srv://${keyMongodbAtlas.user}:${keyMongodbAtlas.password}@${keyMongodbAtlas.cluster}/?retryWrites=true&w=majority;`;
 const { Schema } = mongoose;
 
 const TipoJuegoSchema = new Schema({
