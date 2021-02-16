@@ -1,14 +1,15 @@
 const express = require('express');
 const controller = require('../../controllers/gameTypeController');
+const auth = require('../../middlewares/authenticate').clientSecret;
 
 const router = express.Router();
 
-router.get('/', controller.index);
-router.get('/:id', controller.show);
-router.post('/', controller.store);
-router.put('/:id', controller.updateForce);
-router.patch('/:id', controller.update);
-router.delete('/:id', controller.destroy);
+router.get('/', [auth], controller.index);
+router.get('/:id', [auth], controller.show);
+router.post('/', [auth], controller.store);
+router.put('/:id', [auth], controller.updateForce);
+router.patch('/:id', [auth], controller.update);
+router.delete('/:id', [auth], controller.destroy);
 router.head('/', controller.head);
 
 module.exports = router;

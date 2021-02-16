@@ -8,6 +8,7 @@ function router(app) {
   app.use('/prestado', require('./src/borrowedRoutes'));
   app.use('/deseado', require('./src/wantedRoutes'));
   app.use('/direccion', require('./src/directionRoutes'));
+  app.use('/registro', require('./src/authenticationRoutes'));
   app.use('/', require('./src/startRoutes'));
 }
 

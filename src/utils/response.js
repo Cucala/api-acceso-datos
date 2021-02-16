@@ -23,6 +23,16 @@ function response304(response) {
     },
   });
 }
+// Unauthorized
+function response401(response) {
+  response.status(401).json({
+    status: 'error',
+    data: {
+      id: 'Error401',
+      name: 'No esta autorizado para usar el API',
+    },
+  });
+}
 // Not Found
 function response404(response) {
   response.status(404).json({
@@ -38,5 +48,6 @@ module.exports = {
   response200: (response, data) => response200(response, data),
   response201: (response, data) => response201(response, data),
   response304: (response) => response304(response),
+  response401: (response) => response401(response),
   response404: (response) => response404(response),
 };
